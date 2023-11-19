@@ -2,6 +2,7 @@
 import tkinter as tk
 import ttkbootstrap as ttb
 from ttkbootstrap.constants import *
+import pyperclip
 
 from libs.secret import get_result
 
@@ -11,11 +12,13 @@ class App(ttb.Window):
         super().__init__()
 
         self.style.theme_use("superhero")
-        self.geometry("492x246+700+300")
+        self.geometry("494x246+700+300")
+
+        # self.wm_iconbitmap(f"src/transparent.ico")
+
         self.tk.call('tk', 'scaling', 1.2)
         self.title("generate secret key")
         self.resizable(False, False)
-        # self.root.iconphoto(False, ImageTk.PhotoImage(file="clock_icon.png"))
 
         self.textbox_count = ttb.Entry(self, width=22, bootstyle="primary")
         self.textbox_count.grid(row=0, column=0, padx=10, pady=10, sticky=NW)
@@ -59,7 +62,7 @@ class App(ttb.Window):
             width=20, variable=self.bytes, command=self.click_btn_bytes)
         self.btn_bytes.grid(row=3, column=1, padx=10, pady=4, sticky=NW)
 
-        self.result = ttb.ScrolledText(height=2, width=74)
+        self.result = ttb.Text(height=2, width=77)
         self.result.grid(row=4, column=0, columnspan=3, padx=10, pady=10, sticky=NW)
 
         self.btn_generate = ttb.Button(
@@ -67,10 +70,15 @@ class App(ttb.Window):
             text="Generate", width=20, command=self.click_btn_generate)
         self.btn_generate.grid(row=5, column=0, padx=10, pady=10, sticky=NW)
 
+        self.btn_copy = ttb.Button(
+            self, bootstyle="info",
+            text="Copy", width=20, command=self.click_btn_copy)
+        self.btn_copy.grid(row=5, column=1, padx=10, pady=10, sticky=NW)
+
         self.btn_reset = ttb.Button(
             self, bootstyle="warning-outline",
             text="Reset", width=20, command=self.click_btn_reset)
-        self.btn_reset.grid(row=5, column=1, padx=10, pady=10, sticky=NW)
+        self.btn_reset.grid(row=5, column=2, padx=10, pady=10, sticky=NW)
 
     def click_btn_bytes(self):
         self.digits.set(False)
@@ -93,7 +101,6 @@ class App(ttb.Window):
     def click_btn_generate(self):
 
         self.result.configure(state=NORMAL)
-
         self.result.delete("1.0", END)
 
         settings_dict = {
@@ -107,6 +114,11 @@ class App(ttb.Window):
         result = get_result(settings_dict, self.textbox_count.get())
         self.result.insert('1.0', result)
         self.result.configure(state=DISABLED)
+
+    def click_btn_copy(self):
+        result = self.result.get('1.0', END)
+        if result:
+            pyperclip.copy(result)
 
     def click_btn_reset(self):
         self.result.configure(state=NORMAL)

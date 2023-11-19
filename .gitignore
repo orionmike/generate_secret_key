@@ -12,7 +12,6 @@ src/venv/
 # Distribution / packaging
 src/build/
 src/dist/
-src/bat/
 *.spec
 
 # logs
@@ -31,7 +30,7 @@ src/docs/
 *.psd
 *.pdf
 *.png
-*.bat
+
 
 
 # config

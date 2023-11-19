@@ -1,4 +1,4 @@
-# Get secret key
+# Generate secret key
 
 Приложение для генерации паролей и ключей для шифрования.
 
